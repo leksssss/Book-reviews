@@ -1,0 +1,9 @@
+.details {
+    font-style: italic;
+    padding-left:5%;
+    
+}
+.details h2, h4, h5{
+    font-weight: bold;
+    color: darkcyan;
+}

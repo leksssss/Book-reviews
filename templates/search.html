@@ -1,0 +1,25 @@
+{% extends 'base_search.html' %}
+{% block head %}<title>Search</title> {% endblock head %}
+
+{% block body %}
+
+
+{% if message %}<h2 style="color:rgb(240, 21, 64); font-family:sans-serif ;padding-top: 2%;">{{ message }}</h2>
+<br>
+<p style="color: darkgreen;">You have been registered successfully!</p>
+{% endif %}
+    <div style="padding-left: 20%; padding-top: 15%;">
+        <form class="form-inline active-purple-3 active-pink-4" method="post" action="http://127.0.0.1:5000/search">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-75" name="search_query" type="text" placeholder="Which book do you want to know about?"  aria-label="Search">    
+             <div>          
+            <button  class="btn btn-outline-success waves-effect btn-rounded btn-sm my-0" type="submit">Search</button>
+             </div>
+        </form>
+    </div>
+    <center>
+    {% if error %}
+    <p class="Error" style="color: crimson;"><strong> {{ error }} </strong></p>
+    {% endif %}
+    </center>
+{% endblock body %}
