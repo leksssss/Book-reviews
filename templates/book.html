@@ -32,26 +32,26 @@
         <br>
         <strong>Write your review here!</strong>
         <br>
-        <textarea name="book-review" style="background-color: transparent;width: 80%;"" rows="4"; ></textarea><br>
+        <textarea name="book-review" style="background-color: transparent;width: 80%;" rows="4"; ></textarea><br>
         
         <button type="submit" class="btn btn-warning btn-sm" style="width: 15%;" >Post</button>
-        
     </form>
+    {% if error %}
+    <p class="Error"><strong>Error:</strong>{{ error }}</p>
+    {% endif %}
 </div>
     <br>
     <br>
-    {% if error %}
-        <p class="Error"><strong>Error:</strong>{{ error }}</p>
-    {% endif %}
-    <p class="clear" style=" font-size:xx-large;font-style: italic; ">Reviews</p>
+   
+    <p class="clear" style=" font-size:x-large;font-style: italic;padding-left: 10%; ">Reviews</p>
     {% if r %}
         {% for review in r %}
         <div class="container">
             <div class="row">
-                <div style="color: crimson; font-size: x-large;">
+                <div style="color: crimson; font-size: large;">
                 {{ review['username'].upper() }} 
                 </div>
-                <div style="float: left;font-size: x-large;">
+                <div style="float: left;font-size: large;">
                     &nbsp rated this book  {{ review['rating'] }} out of 5!
                 </div>
             </div>

@@ -15,12 +15,14 @@ p.clear{
 }
 p.Error{
     clear:both;
-    color: crimson;
+    color:rgb(76, 148, 3);
 }
 .container{
     display: block;
     clear:both;
     font-style: italic;
+    width: 80%;
+    padding-right: 20%;
 }
 hr{
     border:1px solid black;
