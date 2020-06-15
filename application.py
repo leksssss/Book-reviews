@@ -107,7 +107,7 @@ def books(book_id):
     if 'username' in session:
         username=session["username"]
         res=db.execute("SELECT * FROM BOOKS WHERE title LIKE :book_id",{"book_id":book_id}).fetchone()
-        r=db.execute("SELECT reviews from REVIEWS NATURAL JOIN BOOKS WHERE title LIKE :book_id AND username LIKE :username",{"book_id":book_id,"username":username}).fetchone()
+        r=db.execute("SELECT * from REVIEWS NATURAL JOIN BOOKS WHERE title LIKE :book_id",{"book_id":book_id,}).fetchall()
         if res and r:
             return render_template("book.html",res=res,r=r)
         elif res:
@@ -124,14 +124,14 @@ def add_review(book_isbn):
         rating=request.args.get("star")
         today=date.today()
         username=session["username"]
-        r=db.execute("SELECT reviews from REVIEWS WHERE isbn LIKE :book_isbn AND username LIKE :username",{"book_isbn":book_isbn,"username":username}).fetchone()
-        
+        r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn AND username LIKE :username",{"book_isbn":book_isbn,"username":username}).fetchone()
         if r is None:   
             db.execute("INSERT INTO REVIEWS(username,isbn,rating,reviews,r_date) VALUES(:username,:isbn,:rating,:reviews,:r_date)",{"username":username,"isbn":book_isbn,"rating":rating,"reviews":review,"r_date":today})
             db.commit()
             return redirect(url_for('view_review',book_isbn=book_isbn))
         else:
             res=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchone()
+            r=db.execute("SELECT * FROM REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn})
             return render_template("book.html",error="You have already reviewed this book.",res=res,r=r)
         
     else:

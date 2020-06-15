@@ -13,9 +13,14 @@
 p.clear{
     clear:both;
 }
+p.Error{
+    clear:both;
+    color: crimson;
+}
 .container{
     display: block;
     clear:both;
+    font-style: italic;
 }
 hr{
     border:1px solid black;
