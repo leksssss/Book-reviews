@@ -14,9 +14,7 @@
     Authored by: <h4>{{ res['author'] }}</h4>
     Published in:<h5>{{ res['year'] }}</h5>
 </div>
-<br>
-<br>
-<div class="container-fluid">
+<div class="container-fluid" style="float: left;">
     <strong>Rate the book</strong>
     <form action="{{ url_for('add_review',book_isbn=res.isbn) }}",method="post">
         <div class="stars">
@@ -33,28 +31,31 @@
         </div>
         <br>
         <strong>Write your review here!</strong>
-        <textarea name="book-review" style="background-color: transparent; width: 90%;"></textarea><br>
-        <div class="text-center">
-        <button type="submit" class="btn btn-warning btn-lg" style="width: 15%;">Post</button>
-        </div>
+        <br>
+        <textarea name="book-review" style="background-color: transparent;width: 80%;"" rows="4"; ></textarea><br>
+        
+        <button type="submit" class="btn btn-warning btn-sm" style="width: 15%;" >Post</button>
+        
     </form>
-    </div>
+</div>
+    <br>
+    <br>
     {% if error %}
         <p class="Error"><strong>Error:</strong>{{ error }}</p>
     {% endif %}
-    <p style="font-style: italic; font-size:xx-large; font-weight:bold;">Reviews</p>
+    <p class="clear" style=" font-size:xx-large;font-style: italic; ">Reviews</p>
     {% if r %}
         {% for review in r %}
         <div class="container">
             <div class="row">
-                <div style="color: crimson; font-weight: bold;">
+                <div style="color: crimson; font-size: x-large;">
                 {{ review['username'].upper() }} 
                 </div>
-                <div style="float: left;">
+                <div style="float: left;font-size: x-large;">
                     &nbsp rated this book  {{ review['rating'] }} out of 5!
                 </div>
             </div>
-            <div class="row" style="color:rgb(133, 6, 48);font-style: italic;">
+            <div class="row" style="color:rgb(133, 6, 48);font-style: italic;font-weight: bold;font-size: larger;">
                 {{ review['reviews'] }}
             </div><hr>
         </div>

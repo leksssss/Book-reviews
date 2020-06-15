@@ -1,24 +1,26 @@
 .details {
     font-style: italic;
-    padding-left:25%;
+    padding-left: 25%;
+    width:50%;
+    float:left;
     
 }
 .details h2, h4, h5{
     font-weight: bold;
     color: rgb(2, 128, 128);
+    font-size: xx-large;
 }
-.us{
-    font-size: large;
-    padding-left: 0%;
-}
-.re{
-    font-size: large;
-    color: rgb(65, 49, 172);    
+p.clear{
+    clear:both;
 }
 .container{
-    font-size: larger;
-    font-weight: bold;
+    display: block;
+    clear:both;
 }
 hr{
     border:1px solid black;
+}
+.container-fluid{
+    width:40%;
+    padding-left: 10%;
 }
