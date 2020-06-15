@@ -16,7 +16,8 @@
     color: rgb(65, 49, 172);    
 }
 .container{
-    padding-bottom: 5%;
+    font-size: larger;
+    font-weight: bold;
 }
 hr{
     border:1px solid black;

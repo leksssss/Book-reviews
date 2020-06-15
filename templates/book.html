@@ -35,14 +35,14 @@
         <strong>Write your review here!</strong>
         <textarea name="book-review" style="background-color: transparent; width: 90%;"></textarea><br>
         <div class="text-center">
-        <button type="submit" class="btn btn-warning btn-lg">Post</button>
+        <button type="submit" class="btn btn-warning btn-lg" style="width: 15%;">Post</button>
         </div>
     </form>
     </div>
     {% if error %}
         <p class="Error"><strong>Error:</strong>{{ error }}</p>
     {% endif %}
-    
+    <p style="font-style: italic; font-size:xx-large; font-weight:bold;">Reviews</p>
     {% if r %}
         {% for review in r %}
         <div class="container">
@@ -54,12 +54,14 @@
                     &nbsp rated this book  {{ review['rating'] }} out of 5!
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="color:rgb(133, 6, 48);font-style: italic;">
                 {{ review['reviews'] }}
             </div><hr>
         </div>
         
         {% endfor %}
+    {% else %}
+       <p style="font-size: large; padding-left: 15%; font-weight: bold;"> No reviews for this book yet. Be the first person to review this book!</p>
     {% endif %}
 
 {% endblock body %}
