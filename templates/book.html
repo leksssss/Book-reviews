@@ -13,6 +13,8 @@
     ISBN:<h4>{{ res['isbn'] }}</h4>
     Authored by: <h4>{{ res['author'] }}</h4>
     Published in:<h5>{{ res['year'] }}</h5>
+    Goodreads average rating:<h5>{{ avg_rating }}</h5>
+    Goodreads rating count:<h5>{{ rating_count}}</h5>
 </div>
 <div class="container-fluid" style="float: left;">
     <strong>Rate the book</strong>
@@ -42,8 +44,9 @@
 </div>
     <br>
     <br>
-   
-    <p class="clear" style=" font-size:x-large;font-style: italic;padding-left: 10%; ">Reviews</p>
+    <br>
+    <br>
+    <p class="clear" style=" font-size:x-large;font-style: italic;padding-left: 10%; padding-top: 8%;">Reviews</p>
     {% if r %}
         {% for review in r %}
         <div class="container">
@@ -62,7 +65,7 @@
         
         {% endfor %}
     {% else %}
-       <p style="font-size: large; padding-left: 15%; font-weight: bold;"> No reviews for this book yet. Be the first person to review this book!</p>
+       <p style="font-size: large; padding-left: 15%; "> No reviews for this book yet. Be the first person to review this book!</p>
     {% endif %}
 
 {% endblock body %}
