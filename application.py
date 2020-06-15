@@ -140,7 +140,7 @@ def add_review(book_isbn):
 @app.route("/view_review/<string:book_isbn>",methods=["POST","GET"])
 def view_review(book_isbn):
     if 'username' in session:
-        r=db.execute("SELECT reviews from REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchall()
+        r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchall()
         res=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchone()
         if r:
             return render_template("book.html",r=r,res=res)
@@ -152,5 +152,5 @@ def view_review(book_isbn):
 @app.route('/api/<string:isbn>',methods=["GET"])
 def api(isbn):
     #goodreads_key=tbXVzxEr1fASz9erp54tw
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_key, "isbns": isbn})
-    print(res.json())
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": isbn})
+    return res.json()

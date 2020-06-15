@@ -15,8 +15,7 @@
     Published in:<h5>{{ res['year'] }}</h5>
 </div>
 <br>
-<br>
-<div class="container-fluid">
+<br><div class="container-fluid">
     <strong>Rate the book</strong>
     <form action="{{ url_for('add_review',book_isbn=res.isbn) }}",method="post">
         <div class="stars">
@@ -33,12 +32,13 @@
         </div>
         <br>
         <strong>Write your review here!</strong>
-        <textarea name="book-review" style="background-color: transparent; width: 90%;"></textarea><br>
+        <textarea name="book-review" style="background-color: transparent; width: 90%; height: 20%;"></textarea><br>
         <div class="text-center">
         <button type="submit" class="btn btn-warning btn-lg">Post</button>
         </div>
     </form>
     </div>
+    <br>
     {% if error %}
         <p class="Error"><strong>Error:</strong>{{ error }}</p>
     {% endif %}
@@ -47,18 +47,22 @@
         {% for review in r %}
         <div class="container">
             <div class="row">
-                <div style="color: crimson; font-weight: bold;">
-                {{ review['username'].upper() }} 
+              <div class="col-6">
+                <div>{{ review['username'].upper() }} says, </div>
+                <div>{{ review['reviews'] }}</div>
+              </div>
+              <div class="col">
+                <div class="r-stars">
+                {% for i in range(0,review['rating'])  %}
+                <img src="https://img.freepik.com/free-vector/start_53876-25533.jpg?size=338&ext=jpg">
+                {% endfor %}
                 </div>
-                <div style="float: left;">
-                    &nbsp rated this book  {{ review['rating'] }} out of 5!
-                </div>
-            </div>
-            <div class="row">
-                {{ review['reviews'] }}
-            </div><hr>
-        </div>
-        
+             </div>
+             <div class="col">
+                {{ review['r_date'] }}
+              </div>
+            </div>    
+            </div>        
         {% endfor %}
     {% endif %}
 

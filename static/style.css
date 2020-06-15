@@ -1,9 +1,23 @@
 .details {
     font-style: italic;
-    padding-left:5%;
+    padding-left:25%;
     
 }
 .details h2, h4, h5{
     font-weight: bold;
-    color: darkcyan;
+    color: rgb(2, 128, 128);
+}
+.us{
+    font-size: large;
+    padding-left: 0%;
+}
+.re{
+    font-size: large;
+    color: rgb(65, 49, 172);    
+}
+.container{
+    padding-bottom: 5%;
+}
+hr{
+    border:1px solid black;
 }
