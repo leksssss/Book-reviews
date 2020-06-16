@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 
 from flask import Flask, session,render_template,request,redirect,url_for
 from flask_session import Session
@@ -109,13 +110,13 @@ def books(book_id):
         res=db.execute("SELECT * FROM BOOKS WHERE title LIKE :book_id",{"book_id":book_id}).fetchone()
         book_isbn=res.isbn
         r=db.execute("SELECT * from REVIEWS NATURAL JOIN BOOKS WHERE title LIKE :book_id",{"book_id":book_id,}).fetchall()
-        g=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
-        avg_rating=g.books[0]["average_rating"]
-        rating_count=g.books[0]["ratings_count"]
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+        content=response.json()['books'][0]
+        
         if res and r:
-            return render_template("book.html",res=res,r=r,avg_rating=avg_rating,rating_count=rating_count)
+            return render_template("book.html",res=res,r=r,content=content)
         elif res:
-            return render_template("book.html",res=res,avg_rating=avg_rating,rating_count=rating_count)
+            return render_template("book.html",res=res,content=content)
         else:
             return render_template("search.html",error="Search for a valid book.")
     else:
@@ -129,9 +130,8 @@ def add_review(book_isbn):
         today=date.today()
         username=session["username"]
         r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn AND username LIKE :username",{"book_isbn":book_isbn,"username":username}).fetchone()
-        g=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
-        avg_rating=g.average_rating
-        rating_count=g.ratings_count
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+        content=response.json()['books'][0]
         if r is None:   
             db.execute("INSERT INTO REVIEWS(username,isbn,rating,reviews,r_date) VALUES(:username,:isbn,:rating,:reviews,:r_date)",{"username":username,"isbn":book_isbn,"rating":rating,"reviews":review,"r_date":today})
             db.commit()
@@ -139,7 +139,7 @@ def add_review(book_isbn):
         else:
             res=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchone()
             r=db.execute("SELECT * FROM REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn})
-            return render_template("book.html",error="You have already reviewed this book.",res=res,r=r,avg_rating=avg_rating,rating_count=rating_count)
+            return render_template("book.html",error="You have already reviewed this book.",res=res,r=r,content=content)
         
     else:
         return render_template("login.html",error="Sorry! You need to login first.")
@@ -149,13 +149,12 @@ def view_review(book_isbn):
     if 'username' in session:
         r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchall()
         res=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchone()
-        g=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
-        avg_rating=g.average_rating
-        rating_count=g.ratings_count
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+        content=response.json()['books'[0]]
         if r:
-            return render_template("book.html",r=r,res=res,avg_rating=avg_rating,rating_count=rating_count)
+            return render_template("book.html",r=r,res=res,content=content)
         else: 
-            return render_template("book.html",error="No reviews yet. Be the first person to review this book!",avg_rating=avg_rating,rating_count=rating_count)
+            return render_template("book.html",error="No reviews yet. Be the first person to review this book!",content=content)
     else:
         return render_template("login.html",error="Sorry! You need to login first.")
 

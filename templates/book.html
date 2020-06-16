@@ -13,11 +13,11 @@
     ISBN:<h4>{{ res['isbn'] }}</h4>
     Authored by: <h4>{{ res['author'] }}</h4>
     Published in:<h5>{{ res['year'] }}</h5>
-    Goodreads average rating:<h5>{{ avg_rating }}</h5>
-    Goodreads rating count:<h5>{{ rating_count}}</h5>
+    Goodreads average rating:<h5>{{ content['average_rating'] }}</h5>
+    Goodreads rating count:<h5>{{ content['ratings_count'] }}</h5>
 </div>
 <div class="container-fluid" style="float: left;">
-    <strong>Rate the book</strong>
+    Rate the book
     <form action="{{ url_for('add_review',book_isbn=res.isbn) }}",method="post">
         <div class="stars">
             <input class="star star-5" value="5" id="star-5" type="radio" name="star"/>
@@ -32,7 +32,7 @@
             <label class="star star-1" for="star-1"></label>
         </div>
         <br>
-        <strong>Write your review here!</strong>
+        Write your review here!
         <br>
         <textarea name="book-review" style="background-color: transparent;width: 80%;" rows="4"; ></textarea><br>
         
@@ -44,21 +44,19 @@
 </div>
     <br>
     <br>
-    <br>
-    <br>
-    <p class="clear" style=" font-size:x-large;font-style: italic;padding-left: 10%; padding-top: 8%;">Reviews</p>
+    <p class="clear" style=" font-size:x-large;font-weight:bold;font-style: italic;padding-left: 10%; padding-top: 5%;">Reviews</p>
     {% if r %}
         {% for review in r %}
         <div class="container">
             <div class="row">
-                <div style="color: crimson; font-size: large;">
+                <div style="color: crimson; font-size: x-large;">
                 {{ review['username'].upper() }} 
                 </div>
-                <div style="float: left;font-size: large;">
+                <div style="float: left;font-size: x-large;">
                     &nbsp rated this book  {{ review['rating'] }} out of 5!
                 </div>
             </div>
-            <div class="row" style="color:rgb(133, 6, 48);font-weight: bold;font-size: larger;">
+            <div class="row" style="color:rgb(90, 5, 34);font-size: large; font-weight: 700;">
                 {{ review['reviews'] }}
             </div><hr>
         </div>
