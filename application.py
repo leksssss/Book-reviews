@@ -27,7 +27,7 @@ search=''
 #Redirect to index.html
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("login.html")
 
 #Validating form data and entering into database    
 @app.route("/register", methods=["POST","GET"])

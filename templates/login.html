@@ -2,29 +2,40 @@
 {% block title %} Bookarazzi Login {% endblock title %}
 
 {% block body %}
-<center>
-    <form action="http://127.0.0.1:5000/login", method="post">
-        <label style="color: rgb(252, 225, 245); padding-top: 5%; font-size:x-large ;">Login Here!</label>
+<fieldset style="float: left; width: 40%; padding-left: 5%; padding-top: 4%;">
+    <div class="heading">
+        <h1 style="color: antiquewhite; font-family: Comic Sans MS;">BOOKARAZZI</h1>
+    </div>
+    <br>
+    <div class="content">
+        <label style="color: antiquewhite; font-size: large;">Hello World! Bookarazzi is the go-to platform for avid readers like you, where you can know about all your favorite books! 
+            <br>So what are you waiting for? To get started, login or <a href="http://127.0.0.1:5000/register">click here to register.</a></label>
+    </div>
+</fieldset>
+<fieldset style="padding-left: 15%; ">
+    <form action="http://127.0.0.1:5000/login", method="post" >
+        <label style="color: rgb(252, 225, 245); padding-top: 8%; font-size:x-large ;">Login Here!</label>
         <div class="form-group">
             
             <label style="color: antiquewhite;">Username</label>
-            <input type="text" class="form-control" required style="width: 20%; " name="username">
+            <input type="text" class="form-control" required style="width: 40%; " name="username">
         
         </div>
         
         <div class="form-group">
     
             <label for="password1" style="color: antiquewhite;">Password</label>
-            <input type="password" class="form-control" required style="width: 20%;" name="InputPassword">
+            <input type="password" class="form-control" required style="width: 40%;" name="InputPassword">
         
         </div>
         <div class="form-group">
         <input type="submit" class="btn btn-danger" value="Sign In">
         </div>
-        <a href="http://127.0.0.1:5000/">Don't have an account yet?</a>
+        <a href="http://127.0.0.1:5000/register">Don't have an account yet?</a>
     </form>
+</fieldset>
     {% if error %}
         <p class="error" style="color: antiquewhite;"><strong>Error:</strong> {{ error }}</p>
     {% endif %}
-</center>
+
 {% endblock body %}
