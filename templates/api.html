@@ -1,0 +1,8 @@
+{% extends 'base_search.html' %}
+{% block head %}
+        <title>Book Info</title>
+        {% endblock head %}
+{% block body %}
+        {{ info['title'] }}
+        {{ info['average_rating'] }}
+{% endblock body %}

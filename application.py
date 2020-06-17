@@ -2,12 +2,13 @@ import os
 import requests
 import json
 
-from flask import Flask, session,render_template,request,redirect,url_for
+from flask import Flask, session,render_template,request,redirect,url_for,abort
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
+from pprint import pprint
 
 app = Flask(__name__)
 
@@ -150,16 +151,31 @@ def view_review(book_isbn):
         r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchall()
         res=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchone()
         response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
-        content=response.json()['books'[0]]
+        content=response.json()['books'][0]
         if r:
             return render_template("book.html",r=r,res=res,content=content)
         else: 
-            return render_template("book.html",error="No reviews yet. Be the first person to review this book!",content=content)
+            return render_template("book.html",res=res,content=content)
     else:
         return render_template("login.html",error="Sorry! You need to login first.")
 
-@app.route('/api/<string:isbn>',methods=["GET"])
-def api(isbn):
-    #goodreads_key=tbXVzxEr1fASz9erp54tw
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": isbn})
-    return res.json()
+@app.route('/api/<string:book_isbn>',methods=["GET"])
+def bookapi(book_isbn):
+    
+    book=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn ",{"book_isbn":book_isbn}).fetchone()
+    if book is not None:
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": f'{book_isbn}'})
+        response.raise_for_status()
+        print(response.text)
+        content=response.json()
+        info={
+            "title":book.title,
+            "author":book.author,
+            "year":book.year,
+            "isbn":book_isbn,
+            "average_score":content['books'][0]['average_rating'],
+            "review_count":content['books'][0]['ratings_count']
+        }
+        return info
+    else:
+        abort(404)

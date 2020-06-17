@@ -16,7 +16,7 @@
     <tr>
         <td><form action="{{ url_for('books',book_id=result.title) }}",method="post"><button class=btn btn-info><strong>{{ result['title'] }}</strong></button></td></form>
         <td><strong>{{ result['author'] }}</strong></td>
-        <td><form action="{{ url_for('api',isbn=result.isbn) }}",method="post"><button class=btn btn-info>{{ result['isbn'] }}</button></form></td>
+        <td><form action="{{ url_for('bookapi',isbn=result.isbn) }}",method="post"><button class=btn btn-info>{{ result['isbn'] }}</button></form></td>
         <td>{{ result['year'] }}</td>
     </tr> 
     {% endfor %}
