@@ -2,7 +2,7 @@ import os
 import requests
 import json
 
-from flask import Flask, session,render_template,request,redirect,url_for,abort
+from flask import Flask, session,render_template,request,redirect,url_for,abort,jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -161,21 +161,12 @@ def view_review(book_isbn):
 
 @app.route('/api/<string:book_isbn>',methods=["GET"])
 def bookapi(book_isbn):
-    
-    book=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn ",{"book_isbn":book_isbn}).fetchone()
-    if book is not None:
-        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": f'{book_isbn}'})
-        response.raise_for_status()
-        print(response.text)
-        content=response.json()
-        info={
-            "title":book.title,
-            "author":book.author,
-            "year":book.year,
-            "isbn":book_isbn,
-            "average_score":content['books'][0]['average_rating'],
-            "review_count":content['books'][0]['ratings_count']
-        }
-        return info
-    else:
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+    book=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :isbn",{"isbn":book_isbn}).fetchone()
+    if not book:
         abort(404)
+    if res.status_code!=200:
+        abort(404)
+    data=res.json()['books'][0]
+    year=str(book[3])
+    return jsonify({"title":book[1],"average_score":data['average_rating'],"author":book[2],"isbn":book[0],"review_count":data['work_ratings_count'],"year":year})
