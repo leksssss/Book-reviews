@@ -50,6 +50,7 @@ def register():
             if error is None:
                 db.execute("INSERT INTO USERS(name,age,username,email,password) VALUES(:name,:age,:username,:email,:password)",{"name":name,"age":age,"username":username,"email":email,"password":generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)})                
                 db.commit()
+                session['username']=username
                 return render_template("search.html",message="Welcome to BOOKARAZZI")
     else:
         return render_template("index.html")
@@ -122,7 +123,9 @@ def books(book_id):
             return render_template("search.html",error="Search for a valid book.")
     else:
         return render_template("login.html",error="Sorry!You need to login first.")
-    
+
+ #Adding reviews for a book
+ # If already exists, show error   
 @app.route("/add_review/<string:book_isbn>",methods=["POST","GET"])
 def add_review(book_isbn):
     if 'username' in session:
@@ -145,6 +148,7 @@ def add_review(book_isbn):
     else:
         return render_template("login.html",error="Sorry! You need to login first.")
 
+# Viewing the reviews for a specific book
 @app.route("/view_review/<string:book_isbn>",methods=["POST","GET"])
 def view_review(book_isbn):
     if 'username' in session:
@@ -159,6 +163,7 @@ def view_review(book_isbn):
     else:
         return render_template("login.html",error="Sorry! You need to login first.")
 
+# Making a get request that returns the details of a book in JSON format
 @app.route('/api/<string:book_isbn>',methods=["GET"])
 def bookapi(book_isbn):
     res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
