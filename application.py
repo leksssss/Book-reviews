@@ -27,7 +27,7 @@ db = scoped_session(sessionmaker(bind=engine))
 
 search=''
 #Redirect to index.html
-@app.route("/")
+@app.route("/",methods=["POST","GET"])
 def index():
     return render_template("login.html")
 
@@ -75,7 +75,7 @@ def login():
             return render_template("login.html")
 
 #Redirect to log_out page
-@app.route("/log_out")
+@app.route("/log_out",methods=["POST","GET"])
 def log_out():
     if 'username' in session:
         session.pop('username',None)
