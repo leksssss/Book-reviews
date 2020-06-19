@@ -1,0 +1,2 @@
+web: gunicorn gettingstarted.wsgi
+web: flask db upgrade; flask translate compile; gunicorn flask-bookarazzi:application
