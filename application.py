@@ -112,7 +112,7 @@ def books(book_id):
         res=db.execute("SELECT * FROM BOOKS WHERE title LIKE :book_id",{"book_id":book_id}).fetchone()
         book_isbn=res.isbn
         r=db.execute("SELECT * from REVIEWS NATURAL JOIN BOOKS WHERE title LIKE :book_id",{"book_id":book_id,}).fetchall()
-        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "", "isbns": book_isbn}) #add the goodreads api key
         content=response.json()['books'][0]
         
         if res and r:
@@ -134,7 +134,7 @@ def add_review(book_isbn):
         today=date.today()
         username=session["username"]
         r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn AND username LIKE :username",{"book_isbn":book_isbn,"username":username}).fetchone()
-        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "", "isbns": book_isbn})
         content=response.json()['books'][0]
         if r is None:   
             db.execute("INSERT INTO REVIEWS(username,isbn,rating,reviews,r_date) VALUES(:username,:isbn,:rating,:reviews,:r_date)",{"username":username,"isbn":book_isbn,"rating":rating,"reviews":review,"r_date":today})
@@ -154,7 +154,7 @@ def view_review(book_isbn):
     if 'username' in session:
         r=db.execute("SELECT * from REVIEWS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchall()
         res=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :book_isbn",{"book_isbn":book_isbn}).fetchone()
-        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+        response=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "", "isbns": book_isbn})
         content=response.json()['books'][0]
         if r:
             return render_template("book.html",r=r,res=res,content=content)
@@ -166,7 +166,7 @@ def view_review(book_isbn):
 # Making a get request that returns the details of a book in JSON format
 @app.route('/api/<string:book_isbn>',methods=["GET"])
 def bookapi(book_isbn):
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tbXVzxEr1fASz9erp54tw", "isbns": book_isbn})
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "", "isbns": book_isbn})
     book=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE :isbn",{"isbn":book_isbn}).fetchone()
     if not book:
         abort(404)
