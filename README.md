@@ -1,6 +1,6 @@
 # BOOKARAZZI 
  A book review platform.
- - See the live website hosted [http://bookarazzi.herokuapp.com/](here)
+ - See the live website hosted [here](http://bookarazzi.herokuapp.com/)
  
 
 ### To run
